@@ -1,16 +1,25 @@
+"""
+TODO LIST CRUD App using flask
+flask_sqlalchemy    => DB interaction
+sqlalchemy_utils    => ChoiceType
+"""
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_utils import ChoiceType
-
-from forms import InsertTask
 
 app = Flask(__name__)
+
+
+from forms import InsertTask
+from models import Todo, db
+
 app.config['SECRET_KEY'] = 'someRandomXYZkey'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasklist.db'
-db = SQLAlchemy(app)
 
-'''
+@app.before_first_request
+def create_table():
+    db.create_all()
+
+
+''' lab1 - list of dictionaries to save data 
 task_list = [{
     'id': 1,
     'title': 'somerandomtitle',
@@ -19,27 +28,9 @@ task_list = [{
 }]
 '''
 
-
-@app.before_first_request
-def create_table():
-    db.create_all()
-
-
-class Todo(db.Model):
-    __tablename__ = 'todolist'
-
-    types = [
-        ('0', 'High Priority'),
-        ('1', 'Mid Priority'),
-        ('2', 'Low Priority')
-    ]
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(300), nullable=True)
-    status = db.Column(ChoiceType(types))  # !!?
-
-    def __repr__(self):
-        return '<Todo %r>' % self.id
+"""
+Creating functions to routes
+"""
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -89,10 +80,10 @@ def delete(id):
     return redirect(url_for('home'))
 
 
-@app.route('/update/<int:id>', methods=['GET', 'POST'])
-def update(id):
-    req_task = {}
-    task_to_update = Todo.query.get_or_404(id)
+@app.route('/update/<int:pk>', methods=['GET', 'POST'])
+def update(pk):
+    # req_task = {}
+    task_to_update = Todo.query.get_or_404(pk)
     if request.method == 'POST':
 
         uptask = {
