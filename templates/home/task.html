@@ -1,0 +1,68 @@
+{% extends 'home/index.html' %}
+
+{% block form %}
+    <form method="POST" class="form-inline">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+
+            {{ form.task_title.label(class="form-control-label") }}
+            {{ form.task_title(class="form-control form-control-lg" , value=task.title)}}
+
+
+        </div>
+        <div class="form-group">
+
+            {{ form.task_desc.label(class="form-control-label") }}
+            {{ form.task_desc(class="form-control form-control-lg" , value=task.description) }}
+
+        </div>
+        <div class="form-group">
+
+            {{ form.task_status.label(class="form-control-label") }}
+            {{ form.task_status(class="form-control form-control-lg" , value=task.status) }}
+
+        </div>
+        <div class="form-group">
+
+            {{ form.submit.label(class="form-control-label") }}
+            {{ form.submit(class="form-control form-control-lg") }}
+
+        </div>
+
+    </form>
+{% endblock %}
+{% block tasks %}
+
+
+    <tr class="fw-normal">
+        <th>
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                 alt="avatar 1"
+                 style="width: 45px; height: auto;">
+            <span class="ms-2">{{ task.title }}</span>
+        </th>
+        <td class="align-middle">
+            <span>{{ task.description }}</span>
+        </td>
+        <td class="align-middle">
+            <h6 class="mb-0"><span class="badge
+                                        {% if task.status == 0 %}
+                                        bg-danger
+                                        {% elif task.status == 1 %}
+                                        bg-warning
+                                        {% elif task.status == 2 %}
+                                        bg-success
+                                        {% endif %}
+                                        ">
+                                            {% if task.status == 0 %}
+                                                High Priority
+                                            {% elif task.status == 1 %}
+                                                Mid Priority
+                                            {% elif task.status == 2 %}
+                                                Low Priority
+                                            {% endif %}</span></h6>
+        </td>
+
+    </tr>
+
+{% endblock %}
