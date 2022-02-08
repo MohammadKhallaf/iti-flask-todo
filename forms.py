@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField
+from wtforms import StringField, SubmitField, SelectField, PasswordField
+from wtforms.validators import InputRequired
 
 
 class InsertTask(FlaskForm):
@@ -12,3 +13,8 @@ class InsertTask(FlaskForm):
     ])
     submit = SubmitField('Submit')
 
+
+class UserForm(FlaskForm):
+    user_name = StringField("User Name", [InputRequired()])
+    user_pass = PasswordField("Password", [InputRequired()])
+    submit = SubmitField('Submit')

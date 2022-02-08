@@ -12,7 +12,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 
-
 class Todo(db.Model):
     __tablename__ = 'todolist'
     types = [
@@ -27,3 +26,14 @@ class Todo(db.Model):
 
     def __repr__(self):
         return '<Todo %r>' % self.id
+
+
+# User Table to Authorize access
+class User(db.Model):
+    __tablename__ = 'userlist'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(10), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return '<User %r>' % self.id
